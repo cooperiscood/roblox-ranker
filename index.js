@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 app.post('/promote', async (req, res) => {
   const authHeader = req.headers['authorization'];
 
+  // Check your own API key to secure your endpoint
   if (authHeader !== process.env.API_KEY) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
@@ -24,8 +25,9 @@ app.post('/promote', async (req, res) => {
   }
 
   try {
-    const response = await axios.post(
-      `https://groups.roblox.com/v1/groups/${process.env.GROUP_ID}/users/${userId}/roles`,
+    // Use PATCH method and the correct URL
+    const response = await axios.patch(
+      `https://groups.roblox.com/v1/groups/${process.env.GROUP_ID}/users/${userId}`,
       { roleId: targetRoleId },
       {
         headers: {
